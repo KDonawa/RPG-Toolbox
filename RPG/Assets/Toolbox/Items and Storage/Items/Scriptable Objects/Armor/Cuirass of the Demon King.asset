@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56cb04d7a84af349abaa6ac7080a36c, type: 3}
+  m_Name: Cuirass of the Demon King
+  m_EditorClassIdentifier: 
+  itemName: Cuirass of the Demon King
+  itemRarity: 5
+  description: Once belonged to the King of Demons. It is said that the wearer is
+    immune to the flames of Hell
+  id: 299
+  isStackable: 0
+  maxStack: 1
+  armorType: 2

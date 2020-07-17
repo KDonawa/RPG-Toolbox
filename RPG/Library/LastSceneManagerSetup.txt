@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Toolbox/_Scenes/Inventory.unity
+- path: Assets/_Scenes/Inventory.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
