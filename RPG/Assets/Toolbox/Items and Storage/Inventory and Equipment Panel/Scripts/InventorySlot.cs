@@ -49,7 +49,10 @@ public class InventorySlot : ItemSlot
             Destroy(gameObject);
         }
 
-        if (itemNameGUI != null) itemNameGUI.text = $"{_item.Name} ({_quantity})";
+        if (itemNameGUI == null) return;
+
+        if (_quantity > 1) itemNameGUI.text = $"{_item.Name} ({_quantity})";
+        else itemNameGUI.text = _item.Name;
     }
 
     #endregion

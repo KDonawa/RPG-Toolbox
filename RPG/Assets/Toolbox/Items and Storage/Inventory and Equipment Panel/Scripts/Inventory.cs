@@ -12,8 +12,8 @@ public class Inventory : MonoBehaviour
     [Header("Testing")]
     [SerializeField] ItemContainer_SO startingItems = null;
 
-    [Header("Values")]
-    [SerializeField] float maxWeight = 200f;    
+    //[Header("Values")]
+    //[SerializeField] float maxWeight = 200f;    
 
     [Header("Prefab / UI")]
     [SerializeField] InventorySlot slotPrefab = null;
@@ -32,7 +32,7 @@ public class Inventory : MonoBehaviour
     public List<InventorySlot> InventorySlots => _inventorySlots;
     //public Tooltip Tooltip => _tooltip;
     //public EquipmentTooltip EquipmentTooltip => _equipmentTooltip;
-    public float MaxWeight => maxWeight;
+    //public float MaxWeight => maxWeight;
     #endregion
 
     #region INITIALIZATION

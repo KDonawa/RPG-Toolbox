@@ -29,8 +29,13 @@ public class EquipmentManager : MonoBehaviour
 
     void Equip(Equipment equipment)
     {
-        if (inventory != null) inventory.RemoveItem(equipment);
-        if (equipmentPanel != null) equipmentPanel.Equip(equipment);
+        if (inventory != null && equipmentPanel != null)
+        {
+            // we need to check if we have the space to unequip first then do below
+            inventory.RemoveItem(equipment);
+            equipmentPanel.Equip(equipment);
+        }
+
         // do other stuff like spawn prefab, etc.
     }
     void SendToInventory(Equipment equipment)

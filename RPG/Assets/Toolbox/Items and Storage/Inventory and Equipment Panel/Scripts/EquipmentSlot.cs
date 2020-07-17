@@ -10,7 +10,6 @@ public abstract class EquipmentSlot : ItemSlot
     protected EquipmentPanel _equipmentPanel = null;
     #endregion
 
-
     #region INITIALIZATION
     public void Initialize(EquipmentPanel equipmentPanel)
     {
@@ -35,6 +34,7 @@ public abstract class EquipmentSlot : ItemSlot
     #region UTILITY
     public void ReceiveEquipment(Equipment equipment)
     {
+        RemoveEquipment();
         //Debug.Log("receiving equipment");
         _item = equipment;
         slotText.color = _equipmentPanel.occupiedSlotColor;
@@ -42,6 +42,7 @@ public abstract class EquipmentSlot : ItemSlot
     public void RemoveEquipment()
     {
         //Debug.Log("removing equipment");
+        if (_item == null) return;
         _equipmentPanel.Unequip(_item as Equipment);
         _item = null;
         slotText.color = _equipmentPanel.vacantSlotColor;

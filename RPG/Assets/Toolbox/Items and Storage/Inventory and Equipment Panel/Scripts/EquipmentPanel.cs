@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 /*
      TODO:
-     -put weapon in correct slot and unequip necesarry weapons based on handedness of weapon being equipped
+     -
 */
 public class EquipmentPanel : MonoBehaviour
 {
@@ -32,21 +32,24 @@ public class EquipmentPanel : MonoBehaviour
     #endregion
 
     #region INETERACTING WITH EQUIPMENT IN SLOTS
-    public event Action<Equipment> OnEquipmentUnequipped;
+    
     public event Action<Item> OnTooltipEnabled;
     public event Action OnTooltipDisabled;
 
     public void MouseEnterEquipmentSlot(Item item) => OnTooltipEnabled?.Invoke(item);
-    public void MouseExitEquipmentSlot() => OnTooltipDisabled?.Invoke();
+    public void MouseExitEquipmentSlot() => OnTooltipDisabled?.Invoke();    
     public void RightClickEquipmentSlot() => OnTooltipDisabled?.Invoke();
+
     #endregion
+
+    #region EQUIPPING AND UNEQUIPPING
+    public event Action<Equipment> OnEquipmentUnequipped;
 
     public void Equip(Equipment equipment)
     {
         if (equipment == null) return;
         if(equipment is Weapon) EquipWeapon(equipment as Weapon);
         else if (equipment is Armor) EquipArmor(equipment as Armor);
-
     }
     public void Unequip(Equipment equipment)
     {
@@ -56,29 +59,44 @@ public class EquipmentPanel : MonoBehaviour
     void EquipWeapon(Weapon weapon)
     {
         if (weapon == null) return;
-        //Debug.Log("equipping weapon");
-        /*
-         Cases:
-         -equipping 1h and main and off are full or both empty => unequip current main hand and put new
-         -equipping 1h to off => check if 2h equipped and remove, if not, unequip current off and put new in off
-         -equipping 2h => unequip main and off
-         -equipping off => check if 2h equipped and remove, if not, unequip current off and put new in off
-         -equipping 1h but main is full and off is not, equip to off
-         */
-         /*
-         Rules:
-         When will we equip to off?: when either weapon is off only or weapon is 1h and main is full and off empty
-         This means that in every other case, we will equip to main
-         */
-
-        // For now, make it easy and just assume that all weapons are 1h and go into main hand slot
+        
         WeaponSlot mainHandSlot = FindWeaponSlotByType(WeaponSlotType.Main_Hand_Weapon);
-        if (mainHandSlot != null)
+        if (mainHandSlot == null)
         {
-            if(!mainHandSlot.IsEmpty) mainHandSlot.RemoveEquipment();
-            mainHandSlot.ReceiveEquipment(weapon);
-        }        
+            Debug.LogWarning("Panel does not have a main hand weapon slot");
+            return;
+        }
+        WeaponSlot offHandSlot = FindWeaponSlotByType(WeaponSlotType.Off_Hand_Weapon);
+        if (offHandSlot == null)
+        {
+            Debug.LogWarning("Panel does not have an off hand weapon slot");
+            return;
+        }
 
+        switch (weapon.Location)
+        {
+            case WeaponLocation.Main_Hand:
+                mainHandSlot.ReceiveEquipment(weapon);
+                break;
+            case WeaponLocation.Off_Hand:
+                if(!mainHandSlot.IsEmpty && (mainHandSlot.Item as Weapon).Location == WeaponLocation.Both_Hands)
+                    mainHandSlot.RemoveEquipment();
+                offHandSlot.ReceiveEquipment(weapon);
+                break;
+            case WeaponLocation.Either:
+                if (mainHandSlot.IsEmpty) mainHandSlot.ReceiveEquipment(weapon);
+                else if((mainHandSlot.Item as Weapon).Location == WeaponLocation.Both_Hands) 
+                    mainHandSlot.ReceiveEquipment(weapon);
+                else if (offHandSlot.IsEmpty) offHandSlot.ReceiveEquipment(weapon);
+                else mainHandSlot.ReceiveEquipment(weapon);
+                break;
+            case WeaponLocation.Both_Hands:
+                offHandSlot.RemoveEquipment();
+                mainHandSlot.ReceiveEquipment(weapon);
+                break;
+            default:
+                break;
+        }              
     }
     void EquipArmor(Armor armor)
     {
@@ -92,12 +110,12 @@ public class EquipmentPanel : MonoBehaviour
             armorSlot.ReceiveEquipment(armor);
         }
     }
-    
+    #endregion
 
     #region UTILITY
     public ArmorSlot FindArmorSlot(Armor armor)
     {
-        return Array.Find(armorSlots, x => x.ArmortSlotType == armor.ArmorType);
+        return FindArmorSlotByType(armor.ArmorType);
     }
     public WeaponSlot FindWeaponSlot(Weapon weapon)
     {
@@ -105,6 +123,7 @@ public class EquipmentPanel : MonoBehaviour
                 FindWeaponSlotByType(WeaponSlotType.Main_Hand_Weapon) :
                 FindWeaponSlotByType(WeaponSlotType.Off_Hand_Weapon);
     }
+    ArmorSlot FindArmorSlotByType(ArmorType slotType) => Array.Find(armorSlots, x => x.ArmorSlotType == slotType);
     WeaponSlot FindWeaponSlotByType(WeaponSlotType slotType) => Array.Find(weaponSlots, x => x.WeaponSlotType == slotType);
     #endregion
 }

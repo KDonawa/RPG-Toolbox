@@ -13,4 +13,5 @@ public class WeaponSlot : EquipmentSlot
     [SerializeField] WeaponSlotType weaponSlotType = WeaponSlotType.None;
 
     public WeaponSlotType WeaponSlotType => weaponSlotType;
+
 }

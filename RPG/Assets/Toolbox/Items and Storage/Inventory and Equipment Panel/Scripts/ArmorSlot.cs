@@ -6,5 +6,5 @@ public class ArmorSlot : EquipmentSlot
 {
     [SerializeField] ArmorType armortSlotType = ArmorType.None;
 
-    public ArmorType ArmortSlotType => armortSlotType;
+    public ArmorType ArmorSlotType => armortSlotType;
 }
