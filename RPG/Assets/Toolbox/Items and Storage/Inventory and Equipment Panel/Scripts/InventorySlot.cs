@@ -11,6 +11,10 @@ public class InventorySlot : ItemSlot
     public int Quantity => _quantity;
 
     #region INITIALIZATION
+    //public InventorySlot(Item item)
+    //{
+
+    //}
     public void Initialize(Item item, Inventory inventory)
     {
         _item = item;

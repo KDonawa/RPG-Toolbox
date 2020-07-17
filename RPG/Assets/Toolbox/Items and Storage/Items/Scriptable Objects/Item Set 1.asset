@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Item Set 1
   m_EditorClassIdentifier: 
   itemSets:
-  - item: {fileID: 11400000, guid: 046aa7d694bd86444b5e72fe6eaf3f16, type: 2}
+  - item: {fileID: 11400000, guid: a1a4ce6c49bc1864bb21b5bd715391ce, type: 2}
     amount: 20
-  - item: {fileID: 11400000, guid: 6977ef66ecebae54588924db8ef7a2d9, type: 2}
+  - item: {fileID: 11400000, guid: ab05a76d9365a1b428c8f70f55bbe931, type: 2}
     amount: 6
-  - item: {fileID: 11400000, guid: 1001ac923bd48e241aa62c11692a5678, type: 2}
+  - item: {fileID: 11400000, guid: c398c3bc283f31a489565a972cc5de76, type: 2}
     amount: 3
   - item: {fileID: 11400000, guid: 7960aedd10b2e4c4392e45da116735e4, type: 2}
     amount: 1

@@ -43,7 +43,7 @@ public class EquipmentPanel : MonoBehaviour
     #endregion
 
     #region EQUIPPING AND UNEQUIPPING
-    public event Action<Equipment> OnEquipmentUnequipped;
+    public event Action<Equipment> EquipmentUnequipped;
 
     public void Equip(Equipment equipment)
     {
@@ -54,7 +54,7 @@ public class EquipmentPanel : MonoBehaviour
     public void Unequip(Equipment equipment)
     {
         //Debug.Log("Unequipping");
-        OnEquipmentUnequipped?.Invoke(equipment);
+        EquipmentUnequipped?.Invoke(equipment);
     }
     void EquipWeapon(Weapon weapon)
     {

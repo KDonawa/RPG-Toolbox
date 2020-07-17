@@ -18,16 +18,16 @@ public class EquipmentManager : MonoBehaviour
     }
     void Start()
     {
-        if (inventory != null) inventory.OnEquipmentUsed += Equip;
-        if (equipmentPanel != null) equipmentPanel.OnEquipmentUnequipped += SendToInventory;
+        if (inventory != null) inventory.EquipmentUsed += OnEquipmentUsed;
+        if (equipmentPanel != null) equipmentPanel.EquipmentUnequipped += OnEquipmentUnequipped;
     }
     private void OnDestroy()
     {
-        if (inventory != null) inventory.OnEquipmentUsed -= Equip;
-        if (equipmentPanel != null) equipmentPanel.OnEquipmentUnequipped -= SendToInventory;
+        if (inventory != null) inventory.EquipmentUsed -= OnEquipmentUsed;
+        if (equipmentPanel != null) equipmentPanel.EquipmentUnequipped -= OnEquipmentUnequipped;
     }
 
-    void Equip(Equipment equipment)
+    void OnEquipmentUsed(Equipment equipment)
     {
         if (inventory != null && equipmentPanel != null)
         {
@@ -38,7 +38,7 @@ public class EquipmentManager : MonoBehaviour
 
         // do other stuff like spawn prefab, etc.
     }
-    void SendToInventory(Equipment equipment)
+    void OnEquipmentUnequipped(Equipment equipment)
     {
         if (inventory != null) inventory.AddItem(equipment);
         // do other stuff

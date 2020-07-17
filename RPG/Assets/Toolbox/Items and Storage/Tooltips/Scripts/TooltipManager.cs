@@ -24,8 +24,8 @@ public class TooltipManager : MonoBehaviour
     {
         if (inventory != null)
         {
-            inventory.OnTooltipEnabled += ShowInventoryTooltips;
-            inventory.OnTooltipDisabled += HideInventoryTooltips;
+            inventory.TooltipEnabled += ShowInventoryTooltips;
+            inventory.TooltipDisabled += HideInventoryTooltips;
         }
         if (equipmentPanel != null)
         {
@@ -37,8 +37,8 @@ public class TooltipManager : MonoBehaviour
     {
         if (inventory != null)
         {
-            inventory.OnTooltipEnabled -= ShowInventoryTooltips;
-            inventory.OnTooltipDisabled -= HideInventoryTooltips;
+            inventory.TooltipEnabled -= ShowInventoryTooltips;
+            inventory.TooltipDisabled -= HideInventoryTooltips;
         }
         if (equipmentPanel != null)
         {

@@ -30,7 +30,7 @@ public class ItemTooltip : MonoBehaviour
 
         itemType.text = item.ItemType.ToString();
 
-        itemDescription.text = item.Description;
+        //itemDescription.text = item.Description;
 
         itemRarity.text = item.ItemRarity.ToString();
 

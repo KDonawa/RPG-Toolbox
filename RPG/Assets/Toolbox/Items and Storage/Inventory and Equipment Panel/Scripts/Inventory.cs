@@ -12,6 +12,9 @@ public class Inventory : MonoBehaviour
     [Header("Testing")]
     [SerializeField] ItemContainer_SO startingItems = null;
 
+    [Header("Utility")]
+    [SerializeField] TabGroup filterOptions = null;
+
     //[Header("Values")]
     //[SerializeField] float maxWeight = 200f;    
 
@@ -19,7 +22,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] InventorySlot slotPrefab = null;
     [SerializeField] GameObject slotContainer = null;
     //[SerializeField] Tooltip _tooltip = null;
-    [SerializeField] TextMeshProUGUI filterOptionsText = null;
+    //[SerializeField] TextMeshProUGUI filterOptionsText = null;
     #endregion
 
     #region MEMBER VARIABLES
@@ -41,10 +44,17 @@ public class Inventory : MonoBehaviour
         _inventorySlots = new List<InventorySlot>();
         //_currentWeight = 0f;
 
+        InitializeFilterOptions();
         PopulateInventory(); // for testing
 
-        //if (_tooltip != null) _tooltip.Hide();
-        if (filterOptionsText != null) filterOptionsText.text = "All";
+    }
+    void InitializeFilterOptions()
+    {
+        if (filterOptions == null) return;
+
+        filterOptions.InitilalizeTabGroup(Enum.GetNames(typeof(ItemType)), FilterBasedOnType);
+        //filterOptions.AddTabButton("All");
+        
     }
     void PopulateInventory()
     {
@@ -71,23 +81,14 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region INVENTORY FILTERING
-    public void FilterBasedOnNone() => FilterBasedOnType(ItemType.None);
-    public void FilterBasedOnWeapons() => FilterBasedOnType(ItemType.Weapon);
-    public void FilterBasedOnArmor() => FilterBasedOnType(ItemType.Armor);
-    public void FilterBasedOnConsumables() => FilterBasedOnType(ItemType.Consumable);
-    void FilterBasedOnType(ItemType itemType)
+    void FilterBasedOnType(string name)
     {
         //print(itemType.ToString());
         foreach (var slot in _inventorySlots)
-        {
-            //TODO: be carful if slots are null
-            if(itemType == ItemType.None) slot.gameObject.SetActive(true);
-            else slot.gameObject.SetActive(slot.Item.ItemType == itemType);       
+        {         
+            if(name == "All") slot.gameObject.SetActive(true);
+            else slot.gameObject.SetActive(slot.Item.ItemType.ToString() == name);       
         }
-        if (filterOptionsText == null) return;
-        
-        if (itemType == ItemType.None) filterOptionsText.text = "All";
-        else filterOptionsText.text = itemType.ToString();
     }
     #endregion
 
@@ -111,44 +112,11 @@ public class Inventory : MonoBehaviour
                 return;
             }          
         }
+        //InventorySlot newSlot = new InventorySlot(item);
         InventorySlot newSlot = Instantiate(slotPrefab, slotContainer.transform);
         _inventorySlots.Add(newSlot);
         newSlot.Initialize(item, this);
-
-        //if (item.IsStackable)
-        //{
-        //    while (amount > 0)
-        //    {
-        //        InventorySlot slot = _inventorySlots.FindLast(x => x.Item.ID == item.ID);
-        //        if (slot != null)
-        //        {
-        //            if (item.MaxStack >= slot.Quantity + amount)
-        //            {
-        //                slot.IncrementItemCount(amount);
-        //                return;
-        //            }
-        //            else
-        //            {
-        //                int amountAbleToAdd = item.MaxStack - slot.Quantity;
-        //                slot.IncrementItemCount(amountAbleToAdd);                        
-        //                amount -= amountAbleToAdd;
-        //            }
-        //        }
-        //        InventorySlot newSlot = Instantiate(slotPrefab, slotContainer.transform);
-        //        _inventorySlots.Add(newSlot);
-        //        newSlot.Initialize(item, this);             
-        //    }            
-        //}
-        //else
-        //{
-        //    for (int i = 0; i < amount; i++)
-        //    {
-        //        InventorySlot newSlot = Instantiate(slotPrefab, slotContainer.transform);
-        //        _inventorySlots.Add(newSlot);
-        //        newSlot.Initialize(item,this);
-        //        newSlot.IncrementItemCount(1);
-        //    }
-        //}               
+            
     }
     public void RemoveItem(Item item)
     {
@@ -161,19 +129,19 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region INTERACTING WITH ITEMS IN INVENTORY
-    public event Action<Equipment> OnEquipmentUsed;
-    public event Action<Consumable> OnConsumableUsed;
-    public event Action<Item> OnTooltipEnabled;
-    public event Action OnTooltipDisabled;
+    public event Action<Equipment> EquipmentUsed;
+    public event Action<Consumable> ConsumableUsed;
+    public event Action<Item> TooltipEnabled;
+    public event Action TooltipDisabled;
 
-    public void MouseEnterInventorySlot(Item item) => OnTooltipEnabled?.Invoke(item);
-    public void MouseExitInventorySlot() => OnTooltipDisabled?.Invoke();
+    public void MouseEnterInventorySlot(Item item) => TooltipEnabled?.Invoke(item);
+    public void MouseExitInventorySlot() => TooltipDisabled?.Invoke();
     public void RightClickItemSlot(Item item)
     {       
-        OnTooltipDisabled?.Invoke();
+        TooltipDisabled?.Invoke();
 
-        if (item is Equipment) OnEquipmentUsed?.Invoke(item as Equipment);
-        else if(item is Consumable) OnConsumableUsed?.Invoke(item as Consumable);
+        if (item is Equipment) EquipmentUsed?.Invoke(item as Equipment);
+        else if(item is Consumable) ConsumableUsed?.Invoke(item as Consumable);
     }
     #endregion
 

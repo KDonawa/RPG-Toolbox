@@ -9,10 +9,11 @@ using UnityEngine.UI;
 */
 public enum ItemType
 {
-    None,
+    All,
     Weapon,
     Armor,
-    Consumable,
+    Potion,
+    Food,
     Quest
 }
 public enum ItemRarity
@@ -30,7 +31,7 @@ public abstract class Item : ScriptableObject
     [Header("Tooltip Info")]
     [SerializeField] string itemName = "Item Name";
     [SerializeField] protected ItemRarity itemRarity = ItemRarity.Common;
-    [SerializeField] string description = "Description goes here";
+    //[SerializeField] string description = "Description goes here";
     //[SerializeField] float sellValue = 0f;
     //[SerializeField] float weight = 0f;
 
@@ -51,14 +52,14 @@ public abstract class Item : ScriptableObject
     //[SerializeField] bool isQuestItem = false;  
     //[SerializeField] bool isDestroyedOnUse = false;
 
-    protected ItemType _itemType = ItemType.None;
+    protected ItemType _itemType = ItemType.All;
 
 
     #region Properties
     public string Name => itemName;
     public ItemType ItemType => _itemType;
     public ItemRarity ItemRarity => itemRarity;
-    public string Description => description;
+    //public string Description => description;
     public int ID => id;
     public bool IsStackable => isStackable;
     public int MaxStack => maxStack;
